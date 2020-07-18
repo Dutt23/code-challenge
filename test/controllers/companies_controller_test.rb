@@ -15,18 +15,15 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_text "Wolf Painting"
   end
 
-  test "Show" do
+  test "Show with out city state" do
     visit company_path(@company)
-
     assert_text @company.name
     assert_text @company.phone
     assert_text @company.email
-    assert_text "City, State"
   end
 
   test "Update" do
     visit edit_company_path(@company)
-
     within("form#edit_company_#{@company.id}") do
       fill_in("company_name", with: "Updated Test Company")
       fill_in("company_zip_code", with: "93009")
@@ -47,7 +44,7 @@ class CompaniesControllerTest < ApplicationSystemTestCase
       fill_in("company_name", with: "New Test Company")
       fill_in("company_zip_code", with: "28173")
       fill_in("company_phone", with: "5553335555")
-      fill_in("company_email", with: "new_test_company@test.com")
+      fill_in("company_email", with: "new_test_company@getmainstreet.com")
       click_button "Create Company"
     end
 
@@ -58,4 +55,43 @@ class CompaniesControllerTest < ApplicationSystemTestCase
     assert_equal "28173", last_company.zip_code
   end
 
+  test "Invalid zip code update" do
+    old_zip = @company.zip_code
+    visit edit_company_path(@company)
+    within("form#edit_company_#{@company.id}") do
+      fill_in("company_zip_code", with: "dduddugd")
+      click_button "Update Company"
+    end
+    assert_text "Error Please validate your entered zip code"
+
+    @company.reload
+    assert_equal old_zip, @company.zip_code
+  end
+
+  test "Invalid email" do
+    visit edit_company_path(@company)
+    within("form#edit_company_#{@company.id}") do
+      fill_in("company_email", with: "Updated Test Company")
+    end
+
+    message = find("#company_email").native.attribute("title")
+    normalValidation =find("#company_email").native.attribute("validationMessage")
+    assert_equal  message, "email domain not permitted"
+    assert_equal normalValidation, "Please match the requested format."
+  end
+
+  test "Invalid number" do
+    visit edit_company_path(@company)
+    within("form#edit_company_#{@company.id}") do
+      fill_in("company_phone", with: "Updated Test Company")
+    end
+
+    message = find("#company_phone").native.attribute("title")
+    normalValidation =find("#company_phone").native.attribute("validationMessage")
+    puts normalValidation
+    puts message
+    assert_equal  message, "Please enter a valid phone number without your area code"
+    assert_equal normalValidation, "Please match the requested format."
+  end
+  
 end
