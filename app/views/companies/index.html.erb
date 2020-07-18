@@ -6,9 +6,12 @@
   <% else %>
     <ul class="list-group my-5">
       <% @companies.each do |company| %>
-        <a href="<%= company_path(company) %>" class="list-group-item list-group-item-action">
+      <div class="container py-3 row">
+        <a style= "width: 60%" href="<%= company_path(company) %>" class="list-group-item d-flex justify-content-between align-items-center mr-5">
           <%= company.name %>
         </a>
+         <%= link_to 'Delete', company_path(company), method: :delete, data: { confirm: "Confirm to delete #{company.name} from list" }, class: "align-self-center btn btn-danger", html: {width: "40%"} %>
+        </div>
       <% end %>
     </ul>
   <% end %>

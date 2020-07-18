@@ -8,7 +8,7 @@ class CompaniesController < ApplicationController
    end
 
   def index
-    @companies = Company.all
+    @companies = Company.where( :status => 1)
   end
 
   def new
@@ -26,8 +26,8 @@ class CompaniesController < ApplicationController
       record.param! :name, String, required: true, message: "Company name required"
       record.param! :zip_code, String, required: true, message: "Zip code required"
       record.param! :description, String
-      # record.param! :phone, String, format: /(?:\+?|\b)[0-9]{10}\b/, message: "Please check your phone number"
-      # record.param! :email, String, format: /\b[A-Z0-9._%a-z\-]+@getmainstreet\.com\z/, blank: true ,message: "Please check your email"
+      record.param! :phone, String 
+      record.param! :email, String 
     end
     @company = Company.new(company_params)
     if @company.save
@@ -47,6 +47,13 @@ class CompaniesController < ApplicationController
       render :edit
     end
   end  
+
+  def destroy
+    @company.update({
+      status: STATUS[:inactive]
+    })
+    redirect_to companies_path, notice: "#{@company.name} has been successfully deleted"
+  end
 
   private
 
