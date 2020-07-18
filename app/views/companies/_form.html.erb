@@ -1,6 +1,15 @@
 <div class="py-5">
   <%= form_for @company do |f| %>
-
+  <% if @company.errors.present? %>
+    <div>
+    <div class="alert <%= bootstrap_class_for("error") %>" id="alert_message"  >
+    <div class="container">
+      <button class="close" data-dismiss="alert"><span>×</span></button>
+      <%= @company.errors.first.second %>
+    </div>
+  </div>
+    </div>
+  <% end %>
     <div class="row my-lg-3">
       <div class="col-lg-3">
         <label><strong>Name</strong><br><small class="text-muted">The public DBA, or Common name of the organization</small></label>
@@ -53,7 +62,7 @@
       </div>
       <div class="col-lg offset-lg-1">
         <div class="form-group">
-          <%= f.text_field :email, pattern: "^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+getmainstreet.com$" ,title: "email domain not permitted",class: "form-control", placeholder: "hello@get.com"%>
+          <%= f.text_field :email, pattern: "^[A-Za-z0-9]+(.|_)+[A-Za-z0-9]+@+getmainstreet.com$",title: "email domain not permitted",class: "form-control", placeholder: "hello@get.com"%>
         </div>
       </div>
     </div>
