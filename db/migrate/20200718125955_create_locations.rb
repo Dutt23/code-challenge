@@ -4,7 +4,7 @@ class CreateLocations < ActiveRecord::Migration[6.0]
       t.string :city, null: false
       t.string :state_name
       t.string :state_code, null: false
-      t.integer :status, null: false, default: -> { STATUS[:active] } #1 comes default active status
+      t.integer :status, null: false, default: -> { 1 } #1 comes default active status
       t.integer :source, null: false, default: -> { 1 } #Default source 1
       t.integer :created_by, null: false, default: -> { 99 }
       t.integer :updated_by, null: true, default: -> { 99 }  #System id 99.

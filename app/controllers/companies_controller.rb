@@ -17,7 +17,7 @@ class CompaniesController < ApplicationController
 
   def show
     param! :id, Integer, required: true
-    query = "select c.*, l.city, l.state_code from companies c, locations l where c.id = #{params[:id]} and l.id = (select location_id from zip_codes where zip_codes.id = c.location_id)"
+    query = "select c.*, l.city, l.state_code from companies c left join locations l on l.id = (select location_id from zip_codes where zip_codes.id = c.location_id)  where c.id = #{params[:id]}"
     @company = Company.find_by_sql(query).first
   end
 
