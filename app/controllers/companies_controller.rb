@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
 
   rescue_from RailsParam::Param::InvalidParameterError do | exception |
    @company = Company.new(company_params)
-    @company.errors[:base] << exception.message
+    @company.errors.add(:error , exception.message)
    render :new 
    end
 
@@ -16,6 +16,9 @@ class CompaniesController < ApplicationController
   end
 
   def show
+    param! :id, Integer, required: true
+    query = "select c.*, l.city, l.state_code from companies c, locations l where c.id = #{params[:id]} and l.id = (select location_id from zip_codes where zip_codes.id = c.location_id)"
+    @company = Company.find_by_sql(query).first
   end
 
   def create
@@ -23,8 +26,8 @@ class CompaniesController < ApplicationController
       record.param! :name, String, required: true, message: "Company name required"
       record.param! :zip_code, String, required: true, message: "Zip code required"
       record.param! :description, String
-      record.param! :phone, String, format: /(?:\+?|\b)[0-9]{10}\b/, message: "Please check your phone number"
-      record.param! :email, String, format: /\b[A-Z0-9._%a-z\-]+@getmainstreet\.com\z/, message: "Please check your email"
+      # record.param! :phone, String, format: /(?:\+?|\b)[0-9]{10}\b/, message: "Please check your phone number"
+      # record.param! :email, String, format: /\b[A-Z0-9._%a-z\-]+@getmainstreet\.com\z/, blank: true ,message: "Please check your email"
     end
     @company = Company.new(company_params)
     if @company.save
