@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_193225) do
+ActiveRecord::Schema.define(version: 2020_07_18_130359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,31 @@ ActiveRecord::Schema.define(version: 2020_04_24_193225) do
     t.string "zip_code"
     t.string "phone"
     t.string "email"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "city", null: false
+    t.string "state_name"
+    t.string "state_code", null: false
+    t.integer "status", default: 1, null: false
+    t.integer "source", default: 1, null: false
+    t.integer "created_by", default: 99, null: false
+    t.integer "updated_by", default: 99
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }
+    t.index ["city", "state_code"], name: "locations_city_state_code_idx"
+  end
+
+  create_table "zip_codes", force: :cascade do |t|
+    t.string "code", null: false
+    t.bigint "location_id"
+    t.integer "status", default: 1, null: false
+    t.integer "source", default: 1, null: false
+    t.integer "created_by", default: 99, null: false
+    t.integer "updated_by", default: 99
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }
+    t.index ["code"], name: "index_zip_codes_on_code", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
