@@ -19,7 +19,7 @@
       </div>
       <div class="col-lg offset-lg-1">
         <div class="form-group">
-          <%= f.text_field :zip_code, class: "form-control", placeholder: "93003", required: true %>
+          <%= f.text_field :zip_code, :maxlength => 5, class: "form-control", placeholder: "93003", required: true %>
         </div>
       </div>
     </div>
