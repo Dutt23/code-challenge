@@ -19,7 +19,7 @@
       </div>
       <div class="col-lg offset-lg-1">
         <div class="form-group">
-          <%= f.text_field :zip_code, :maxlength => 5, class: "form-control", placeholder: "93003", required: true %>
+          <%= f.text_field :zip_code, :maxlength => 5, :minlength => 5, class: "form-control", placeholder: "93003", required: true %>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
       </div>
       <div class="col-lg offset-lg-1">
         <div class="form-group">
-          <%= f.text_field :phone, class: "form-control", placeholder: "555-555-5555"%>
+          <%= f.text_field :phone, pattern: "[0-9]+", :maxlength => 10, :minlength => 10, :title => "Please enter a valid phone number without your area code", class: "form-control", placeholder: "555-555-5555"%>
         </div>
       </div>
     </div>
