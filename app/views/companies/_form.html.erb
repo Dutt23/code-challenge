@@ -2,12 +2,17 @@
   <%= form_for @company do |f| %>
   <% if @company.errors.present? %>
     <div>
-    <div class="alert <%= bootstrap_class_for("error") %>" id="alert_message"  >
+    <ul >
+    <% @company.errors.full_messages.each do |error| %>
+       <div class="alert <%= bootstrap_class_for("error") %>" id="alert_message"  >
     <div class="container">
       <button class="close" data-dismiss="alert"><span>×</span></button>
-      <%= @company.errors.first.second %>
+      <%= error %>
     </div>
   </div>
+        <% end %>
+    </ul>
+    
     </div>
   <% end %>
     <div class="row my-lg-3">
